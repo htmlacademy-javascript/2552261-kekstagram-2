@@ -100,8 +100,8 @@ function createComments(commentId) {
   const comments = [];
   const count = getRandomInteger(0, 30);
   for (let i = 1; i <= count; i++) {
-    commentId += 1;
     comments.push(createComment(commentId));
+    commentId += 1;
   }
   return comments;
 }
@@ -120,7 +120,7 @@ function createPhotoInfo(id) {
     url: createUrl(id),
     description: createDescription(),
     likes: getRandomInteger(15, 200),
-    comments: createComments()
+    comments: []
   };
 }
 
