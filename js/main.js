@@ -1,4 +1,4 @@
-const names = [
+const NAMES = [
   'Александр', 'Мария', 'Дмитрий', 'Екатерина', 'Иван',
   'Анна', 'Максим', 'Ольга', 'Сергей', 'Татьяна',
   'Анастасия', 'Павел', 'Светлана', 'Николай', 'Елена',
@@ -6,7 +6,7 @@ const names = [
   'Ксения', 'Виктор', 'Олег', 'Ирина', 'Валентина'
 ];
 
-const messages = [
+let messages = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию хорошо бы убирать палец из кадра.',
@@ -16,7 +16,7 @@ const messages = [
   'Лица у людей на фотке перекошены, как будто их избивают.Как можно было поймать такой неудачный момент?!'
 ];
 
-const photoDescriptions = [
+let photoDescriptions = [
   'Солнечный закат на пляже.',
   'Горы, покрытые снежным покровом.',
   'Яркие цветы весной.',
@@ -45,10 +45,6 @@ const photoDescriptions = [
   'Счастливые моменты на свадьбе.'
 ];
 
-let countId = 1;
-let countCommentId = 1;
-let countUrl = 1;
-
 function getRandomInteger(a, b) {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -64,11 +60,20 @@ function createAvatar() {
   return `img/avatar-${getRandomInteger(0, 6)}.svg`;
 }
 
-function createMessage(array) {
+function createMessage(message) {
+  return message;
+}
+
+/**
+ *
+ * @returns {string}
+ * @description функция для выполнения тестового задания. Создаёт текст комментария — message — из одного или двух представленных предложений.
+ */
+function createMessages() {
   let count = getRandomInteger(1, 2);
   let message = '';
-  while (count >= 1) {
-    const randomMessage = getRandomArrayElement(array);
+  for (let i = 0; i < count; i++) {
+    const randomMessage = getRandomArrayElement(messages);
     if (!message.includes(randomMessage)) {
       message += `${randomMessage}`;
       count--;
@@ -77,57 +82,67 @@ function createMessage(array) {
   return message;
 }
 
-function createComments() {
-  let count = getRandomInteger(0, 30);
+function createComment(id) {
+  return {
+    id: id,
+    avatar: createAvatar(),
+    message: createMessage(createMessages()),
+    name: getRandomArrayElement(NAMES)
+  };
+}
+
+/**
+ *
+ * @returns {comments[]}
+ * @description функция для выполнения тестового задания. Создаёт случайное количество комментариев.
+ */
+function createComments(commentId) {
   const comments = [];
-  while (count >= 0) {
-    comments.push({
-      id: createCommentId(),
-      avatar: createAvatar(),
-      message: createMessage(messages),
-      name: getRandomArrayElement(names)
-    });
-    count--;
+  const count = getRandomInteger(0, 30);
+  for (let i = 1; i <= count; i++) {
+    comments.push(createComment(commentId));
+    commentId += 1;
   }
   return comments;
 }
 
-function createDescription(array) {
-  return getRandomArrayElement(array);
+function createDescription() {
+  return getRandomArrayElement(photoDescriptions);
 }
 
-function createId() {
-  return countId++;
+function createUrl(id) {
+  return `photos/${id}.jpg`;
 }
 
-function createCommentId() {
-  return countCommentId++;
-}
-
-function createUrl() {
-  return `photos/${countUrl++}.jpg`;
-}
-
-
-function createPhotoInfo() {
+function createPhotoInfo(id) {
   return {
-    id: createId(),
-    url: createUrl(),
-    description: createDescription(photoDescriptions),
+    id: id,
+    url: createUrl(id),
+    description: createDescription(),
     likes: getRandomInteger(15, 200),
-    comments: createComments()
+    comments: []
   };
 }
 
-
+/**
+ *
+ * @param amount
+ * @returns {*[]}
+ * @description функция для выполнения тестового задания. Создаёт n-количество постов.
+ */
 function createPhotos(amount) {
   const array = [];
+  let commentId = 1;
   for (let i = 1; i <= amount; i++) {
-    array.push(createPhotoInfo());
+    const comments = createComments(commentId);
+    const photos = createPhotoInfo(i);
+    photos.comments = comments;
+    commentId += comments.length;
+    array.push(photos);
   }
   return array;
 }
 
-createPhotos(25);
+console.table(createPhotos(25));
 
 
