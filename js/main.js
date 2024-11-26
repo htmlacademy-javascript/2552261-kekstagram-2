@@ -1,4 +1,3 @@
-import {createPhotos} from './postCreate.js';
+import './miniatureCreate.js';
 
-console.table(createPhotos(25));
 
