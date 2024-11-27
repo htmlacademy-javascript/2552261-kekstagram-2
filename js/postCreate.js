@@ -3,7 +3,7 @@ import {getRandomInteger, getRandomArrayElement} from './util.js';
 
 
 function createAvatar() {
-  return `img/avatar-${getRandomInteger(0, 6)}.svg`;
+  return `img/avatar-${getRandomInteger(1, 6)}.svg`;
 }
 
 function createMessage(message) {

@@ -9,4 +9,6 @@ function getRandomArrayElement(array) {
   return array[getRandomInteger(0, array.length - 1)];
 }
 
-export {getRandomInteger, getRandomArrayElement};
+const isEscKeyDown = (evt) => evt.key === 'Escape';
+
+export {getRandomInteger, getRandomArrayElement, isEscKeyDown};

@@ -17,4 +17,5 @@ photos.forEach((photo) => {
 
 pictures.appendChild(documentFragment);
 
+export {photos};
 
