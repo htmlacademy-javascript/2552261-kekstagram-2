@@ -1,0 +1,14 @@
+function getRandomInteger(a, b) {
+  const lower = Math.ceil(Math.min(a, b));
+  const upper = Math.floor(Math.max(a, b));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
+}
+
+function getRandomArrayElement(array) {
+  return array[getRandomInteger(0, array.length - 1)];
+}
+
+const isEscKeyDown = (evt) => evt.key === 'Escape';
+
+export {getRandomInteger, getRandomArrayElement, isEscKeyDown};
