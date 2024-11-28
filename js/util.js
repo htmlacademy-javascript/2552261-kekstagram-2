@@ -9,6 +9,15 @@ function getRandomArrayElement(array) {
   return array[getRandomInteger(0, array.length - 1)];
 }
 
+
+function addHidden(block) {
+  block.classList.add('hidden');
+}
+
+function removeHidden(block) {
+  block.classList.remove('hidden');
+}
+
 const isEscKeyDown = (evt) => evt.key === 'Escape';
 
-export {getRandomInteger, getRandomArrayElement, isEscKeyDown};
+export {getRandomInteger, getRandomArrayElement, isEscKeyDown, addHidden, removeHidden};
