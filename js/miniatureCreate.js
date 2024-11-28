@@ -1,6 +1,7 @@
 import {createPhotos} from './postCreate.js';
 const POST_AMOUNT = 25;
 
+
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const pictures = document.querySelector('.pictures');
 const documentFragment = document.createDocumentFragment();
@@ -18,4 +19,5 @@ photos.forEach((photo) => {
 pictures.appendChild(documentFragment);
 
 export {photos};
+
 

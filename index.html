@@ -183,6 +183,7 @@
       <!-- Кнопка для выхода из полноэкранного просмотра изображения -->
       <button type="reset" class="big-picture__cancel  cancel" id="picture-cancel">Закрыть</button>
     </div>
+
   </section>
 </main>
 
@@ -250,6 +251,47 @@
     <h2 class="data-error__title">Не удалось загрузить данные</h2>
   </section>
 </template>
+
+  </footer>
+
+  <!-- Шаблон изображения случайного пользователя -->
+  <template id="picture">
+    <a href="#" class="picture">
+      <img class="picture__img" src="" width="182" height="182" alt="Случайная фотография">
+      <p class="picture__info">
+        <span class="picture__comments"></span>
+        <span class="picture__likes"></span>
+      </p>
+    </a>
+  </template>
+
+  <!-- Сообщение с ошибкой загрузки изображения -->
+  <template id="error">
+    <section class="error">
+      <div class="error__inner">
+        <h2 class="error__title">Ошибка загрузки файла</h2>
+        <button type="button" class="error__button">Попробовать ещё раз</button>
+      </div>
+    </section>
+  </template>
+
+  <!-- Сообщение об успешной загрузке изображения -->
+  <template id="success">
+    <section class="success">
+      <div class="success__inner">
+        <h2 class="success__title">Изображение успешно загружено</h2>
+        <button type="button" class="success__button">Круто!</button>
+      </div>
+    </section>
+  </template>
+
+    <!-- Сообщение с ошибкой загрузки изображений от других пользователей -->
+    <template id="data-error">
+      <section class="data-error">
+        <h2 class="data-error__title">Не удалось загрузить данные</h2>
+      </section>
+    </template>
+
 <!--<script src="./js/main.js" type="module"></script>-->
 <script src="./js/main.js" type="module"></script>
 </body>
