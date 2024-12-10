@@ -124,10 +124,13 @@
               <!-- Добавление хэштегов и комментария к изображению -->
               <fieldset class="img-upload__text text">
                 <div class="img-upload__field-wrapper">
-                  <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег"  minlength="20" pattern="/^#[A-Za-z]/" data-pristine-pattern-message="Pattern" data-pristine-minlength-message="fgfgfgfg" required>
+                  <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег" minlength="2"
+                         data-pristine-pattern-message="Введён невалидный хэштег"
+                         pattern="/^(#([A-Za-z0-9]{1,19})(\s|$)){1,5}$/i">
                 </div>
                 <div class="img-upload__field-wrapper">
-                  <textarea class="text__description" name="description" placeholder="Ваш комментарий..."></textarea>
+                  <textarea class="text__description" name="description" placeholder="Ваш комментарий..."
+                  ></textarea>
                 </div>
               </fieldset>
 
@@ -252,45 +255,45 @@
   </section>
 </template>
 
-  </footer>
+</footer>
 
-  <!-- Шаблон изображения случайного пользователя -->
-  <template id="picture">
-    <a href="#" class="picture">
-      <img class="picture__img" src="" width="182" height="182" alt="Случайная фотография">
-      <p class="picture__info">
-        <span class="picture__comments"></span>
-        <span class="picture__likes"></span>
-      </p>
-    </a>
-  </template>
+<!-- Шаблон изображения случайного пользователя -->
+<template id="picture">
+  <a href="#" class="picture">
+    <img class="picture__img" src="" width="182" height="182" alt="Случайная фотография">
+    <p class="picture__info">
+      <span class="picture__comments"></span>
+      <span class="picture__likes"></span>
+    </p>
+  </a>
+</template>
 
-  <!-- Сообщение с ошибкой загрузки изображения -->
-  <template id="error">
-    <section class="error">
-      <div class="error__inner">
-        <h2 class="error__title">Ошибка загрузки файла</h2>
-        <button type="button" class="error__button">Попробовать ещё раз</button>
-      </div>
-    </section>
-  </template>
+<!-- Сообщение с ошибкой загрузки изображения -->
+<template id="error">
+  <section class="error">
+    <div class="error__inner">
+      <h2 class="error__title">Ошибка загрузки файла</h2>
+      <button type="button" class="error__button">Попробовать ещё раз</button>
+    </div>
+  </section>
+</template>
 
-  <!-- Сообщение об успешной загрузке изображения -->
-  <template id="success">
-    <section class="success">
-      <div class="success__inner">
-        <h2 class="success__title">Изображение успешно загружено</h2>
-        <button type="button" class="success__button">Круто!</button>
-      </div>
-    </section>
-  </template>
+<!-- Сообщение об успешной загрузке изображения -->
+<template id="success">
+  <section class="success">
+    <div class="success__inner">
+      <h2 class="success__title">Изображение успешно загружено</h2>
+      <button type="button" class="success__button">Круто!</button>
+    </div>
+  </section>
+</template>
 
-    <!-- Сообщение с ошибкой загрузки изображений от других пользователей -->
-    <template id="data-error">
-      <section class="data-error">
-        <h2 class="data-error__title">Не удалось загрузить данные</h2>
-      </section>
-    </template>
+<!-- Сообщение с ошибкой загрузки изображений от других пользователей -->
+<template id="data-error">
+  <section class="data-error">
+    <h2 class="data-error__title">Не удалось загрузить данные</h2>
+  </section>
+</template>
 
 <script src="vendor/pristine/pristine.js"></script>
 <script src="./js/main.js" type="module"></script>

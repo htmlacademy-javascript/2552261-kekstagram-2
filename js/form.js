@@ -9,30 +9,57 @@ const imgUploadEffects = document.querySelector('.img-upload__effects');
 const effectsPreview = imgUploadEffects.querySelectorAll('.effects__preview');
 const uploadButtonClose = document.querySelector('.img-upload__cancel');
 const textHashtags = document.querySelector('.text__hashtags');
+const textDescription = document.querySelector('.text__description');
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
-  errorClass: 'has-danger',
-  successClass: 'has-success',
-  errorTextClass: 'text-help'
+  errorClass: '--error',
+  errorTextClass: 'img-upload__field-wrapper'
 });
+
+pristine.addValidator(
+  textHashtags, (value) => {
+    const hashtags = value.split(/\s/);
+    return hashtags.length <= 5;
+  },
+  'Превышено количество хэштегов'
+);
+
+pristine.addValidator(
+  textHashtags, (value) => {
+    const hashtags = value.split(/\s/);
+    const uniqueHashtags = new Set(hashtags);
+    return uniqueHashtags.size === hashtags.length;
+  },
+  'Хэштеги повторяются'
+);
+
+pristine.addValidator(textDescription, (value) => {
+  if (value.length > 140) {
+    textDescription.value = value.toString().substring(0, 140);
+  }
+  return value.length <= 140;
+}, 'Достигнуто максимальное количество символов (140)');
 
 form.action = 'https://31.javascript.htmlacademy.pro/kekstagram';
 form.method = 'POST';
 form.enctype = 'multipart/form-data';
 
 form.addEventListener('submit', (evt) => {
-  evt.preventDefault();
   const isValid = pristine.validate();
-  if (isValid) {
-    console.log('valid');
-  } else {
-    console.log('invalid');
+  if (!isValid) {
+    evt.preventDefault();
   }
 });
 
 textHashtags.addEventListener('keydown', (evt) => {
+  if (isEscKeyDown(evt)) {
+    evt.stopPropagation();
+  }
+});
+
+textDescription.addEventListener('keydown', (evt) => {
   if (isEscKeyDown(evt)) {
     evt.stopPropagation();
   }
