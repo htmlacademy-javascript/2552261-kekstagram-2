@@ -1,4 +1,5 @@
 import {isEscKeyDown} from './util.js';
+import {setupUploadFormValidation} from './validation.js';
 
 const form = document.querySelector('.img-upload__form');
 const imgUploadInput = document.querySelector('.img-upload__input');
@@ -10,37 +11,9 @@ const effectsPreview = imgUploadEffects.querySelectorAll('.effects__preview');
 const uploadButtonClose = document.querySelector('.img-upload__cancel');
 const textHashtags = document.querySelector('.text__hashtags');
 const textDescription = document.querySelector('.text__description');
+const FIRST_FILE = 0;
 
-const pristine = new Pristine(form, {
-  classTo: 'img-upload__field-wrapper',
-  errorTextParent: 'img-upload__field-wrapper',
-  errorClass: '--error',
-  errorTextClass: 'img-upload__field-wrapper'
-});
-
-pristine.addValidator(
-  textHashtags, (value) => {
-    const hashtags = value.split(/\s/);
-    return hashtags.length <= 5;
-  },
-  'Превышено количество хэштегов'
-);
-
-pristine.addValidator(
-  textHashtags, (value) => {
-    const hashtags = value.split(/\s/);
-    const uniqueHashtags = new Set(hashtags);
-    return uniqueHashtags.size === hashtags.length;
-  },
-  'Хэштеги повторяются'
-);
-
-pristine.addValidator(textDescription, (value) => {
-  if (value.length > 140) {
-    textDescription.value = value.toString().substring(0, 140);
-  }
-  return value.length <= 140;
-}, 'Достигнуто максимальное количество символов (140)');
+const pristine = setupUploadFormValidation(form, textHashtags, textDescription);
 
 form.action = 'https://31.javascript.htmlacademy.pro/kekstagram';
 form.method = 'POST';
@@ -84,7 +57,7 @@ function onKeydownEsc(evt) {
 }
 
 function changePreviewImage(uploadFile) {
-  const file = uploadFile.files[0];
+  const file = uploadFile.files[FIRST_FILE];
   if (file) {
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -103,4 +76,6 @@ function close() {
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onKeydownEsc);
   imgUploadInput.value = '';
+  textHashtags.value = '';
+  textDescription.value = '';
 }

@@ -126,7 +126,8 @@
                 <div class="img-upload__field-wrapper">
                   <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег" minlength="2"
                          data-pristine-pattern-message="Введён невалидный хэштег"
-                         pattern="/^(#([A-Za-z0-9]{1,19})(\s|$)){1,5}$/i">
+                         data-pristine-minlength-message="Минимальная длинна хэштега 2 символа"
+                         pattern="/^(#([A-Za-zА-яа-я0-9]{1,19})(\s|$)){1,5}$/i">
                 </div>
                 <div class="img-upload__field-wrapper">
                   <textarea class="text__description" name="description" placeholder="Ваш комментарий..."
