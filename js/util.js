@@ -18,6 +18,11 @@ function removeHidden(block) {
   block.classList.remove('hidden');
 }
 
+function convertPercentageToNumber(percentageString) {
+  const number = parseInt(percentageString.replace('%', ''), 10);
+  return number;
+}
+
 const isEscKeyDown = (evt) => evt.key === 'Escape';
 
-export {getRandomInteger, getRandomArrayElement, isEscKeyDown, addHidden, removeHidden};
+export {getRandomInteger, getRandomArrayElement, isEscKeyDown, addHidden, removeHidden, convertPercentageToNumber};
