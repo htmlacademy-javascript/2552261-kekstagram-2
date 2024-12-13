@@ -1,6 +1,6 @@
-const MIN_COMMENT_LENGTH = 0;
 const MAX_COMMENT_LENGTH = 140;
 const MAX_AMOUNT_HASHTAGS = 5;
+const MIN_HASHTAG_LENGTH = 2;
 
 function setupUploadFormValidation(form, textHashtags, textDescription) {
   const pristine = new Pristine(form, {
@@ -15,7 +15,29 @@ function setupUploadFormValidation(form, textHashtags, textDescription) {
       const hashtags = transformHashtags(value);
       return hashtags.length <= MAX_AMOUNT_HASHTAGS;
     },
-    'Превышено количество хэштегов'
+    'Превышено количество хэштегов', 4, true
+  );
+
+  pristine.addValidator(
+    textHashtags, (value) => {
+      if (value.trim() === '') {
+        return true;
+      }
+      const pattern = /^(#([A-Za-zА-яа-я0-9]{1,19})(\s|$)){1,5}$/i;
+      return pattern.test(value);
+    },
+    'Введён невалидный хэштег', 1, true
+  );
+
+  pristine.addValidator(
+    textHashtags, (value) => {
+      if (value.length !== 0) {
+        const hashtags = transformHashtags(value);
+        return hashtags.every((hashtag) => hashtag.length >= MIN_HASHTAG_LENGTH);
+      }
+      return value.length === 0;
+    },
+    'Минимальная длинна хэштега 2 символа', 2, true
   );
 
   pristine.addValidator(
@@ -24,15 +46,11 @@ function setupUploadFormValidation(form, textHashtags, textDescription) {
       const uniqueHashtags = new Set(hashtags);
       return uniqueHashtags.size === hashtags.length;
     },
-    'Хэштеги повторяются'
+    'Хэштеги повторяются', 3, true
   );
 
-  pristine.addValidator(textDescription, (value) => {
-    if (value.length > MAX_COMMENT_LENGTH) {
-      textDescription.value = value.toString().substring(MIN_COMMENT_LENGTH, MAX_COMMENT_LENGTH);
-    }
-    return textDescription.value.length < MAX_COMMENT_LENGTH;
-  }, `Достигнуто максимальное количество символов (${MAX_COMMENT_LENGTH})`);
+  pristine.addValidator(textDescription, (value) => value.length < MAX_COMMENT_LENGTH
+    , `Достигнуто максимальное количество символов (${MAX_COMMENT_LENGTH})`);
   return pristine;
 }
 
