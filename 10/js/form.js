@@ -15,6 +15,16 @@ const MAX_SLIDER_BRIGHTNESS_VALUE = 3;
 const STEP_SLIDER = 0.1;
 const STEP_SLIDER_INVERT = 1;
 
+const EFFECT_ORIGINAL = 'none';
+const EFFECT_CHROME = 'grayscale';
+const EFFECT_SEPIA = 'sepia';
+const EFFECT_MARVIN = 'invert';
+const EFFECT_PHOBOS = 'blur';
+const EFFECT_HEAT = 'brightness';
+
+const SLIDER_VISIBLE = 'visible';
+const SLIDER_HIDDEN = 'hidden';
+
 const form = document.querySelector('.img-upload__form');
 const imgUploadInput = document.querySelector('.img-upload__input');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
@@ -47,26 +57,12 @@ updateValueField(sliderBar, effectLevelValue);
 
 sliderContainer.style.visibility = 'hidden';
 
-radioEffectNone.addEventListener('change', () => {
-  sliderContainer.style.visibility = 'hidden';
-  resetSlider(sliderBar);
-  imgUploadPreview.style.filter = 'none';
-});
-radioEffectChrome.addEventListener('change', () => {
-  setupImageEffect('grayscale');
-});
-radioEffectSepia.addEventListener('change', () => {
-  setupImageEffect('sepia');
-});
-radioEffectMarvin.addEventListener('change', () => {
-  setupImageEffect('invert');
-});
-radioEffectPhobos.addEventListener('change', () => {
-  setupImageEffect('blur');
-});
-radioEffectHeat.addEventListener('change', () => {
-  setupImageEffect('brightness');
-});
+setupImageEffect(radioEffectNone, SLIDER_HIDDEN, EFFECT_ORIGINAL);
+setupImageEffect(radioEffectChrome, SLIDER_VISIBLE, EFFECT_CHROME);
+setupImageEffect(radioEffectSepia, SLIDER_VISIBLE, EFFECT_SEPIA);
+setupImageEffect(radioEffectMarvin, SLIDER_VISIBLE, EFFECT_MARVIN);
+setupImageEffect(radioEffectPhobos, SLIDER_VISIBLE, EFFECT_PHOBOS);
+setupImageEffect(radioEffectHeat, SLIDER_VISIBLE, EFFECT_HEAT);
 
 buttonScaleSmaller.addEventListener('click', () => {
   let value = convertPercentageToNumber(scaleControl.value);
@@ -145,24 +141,30 @@ function close() {
   form.reset();
 }
 
-function setupImageEffect(filterName) {
-  sliderContainer.style.visibility = 'visible';
-  resetSlider(sliderBar);
-  applyEffectLevel(imgUploadPreview, filterName);
+function setupImageEffect(radioElement, SliderVisibility, filterName) {
+  radioElement.addEventListener('change', () => {
+    sliderContainer.style.visibility = SliderVisibility;
+    resetSlider(sliderBar);
+    applyEffectLevel(imgUploadPreview, filterName);
+  });
 }
 
 function applyEffectLevel(image, filterName) {
   updateSliderOptions(filterName);
-  onUpdateSlider(sliderBar, () => {
-    image.style.filter = `${filterName}(${getFilterValue(filterName)})`;
+  if (filterName === EFFECT_ORIGINAL) {
+    image.style.filter = EFFECT_ORIGINAL;
+  } else {
+    onUpdateSlider(sliderBar, () => {
+      image.style.filter = `${filterName}(${getFilterValue(filterName)})`;
+    }
+    );
   }
-  );
 }
 
 function updateSliderOptions(filterName) {
-  if (filterName === 'invert') {
+  if (filterName === EFFECT_MARVIN) {
     updateSlider(sliderBar, MAX_SLIDER_INVERT_VALUE, MIN_SLIDER_VALUE, MAX_SLIDER_INVERT_VALUE, STEP_SLIDER_INVERT);
-  } else if (filterName === 'blur' || filterName === 'brightness') {
+  } else if (filterName === EFFECT_PHOBOS || filterName === EFFECT_HEAT) {
     updateRange(sliderBar, MAX_SLIDER_BRIGHTNESS_VALUE, MIN_SLIDER_VALUE, MAX_SLIDER_BRIGHTNESS_VALUE, STEP_SLIDER);
   } else {
     updateSlider(sliderBar, MAX_SLIDER_VALUE, MIN_SLIDER_VALUE, MAX_SLIDER_VALUE, STEP_SLIDER);
@@ -171,9 +173,9 @@ function updateSliderOptions(filterName) {
 
 function getFilterValue(filterName) {
   let value = effectLevelValue.value;
-  if (filterName === 'invert') {
+  if (filterName === EFFECT_MARVIN) {
     value += '%';
-  } else if (filterName === 'blur') {
+  } else if (filterName === EFFECT_PHOBOS) {
     value += 'px';
   }
   return value;

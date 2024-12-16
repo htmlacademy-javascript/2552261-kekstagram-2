@@ -1,7 +1,6 @@
 function createSlider(slider, start, min, max, step) {
   noUiSlider.create(slider, {
     start: [start],
-    connect: true,
     range: {
       'min': min,
       'max': max
