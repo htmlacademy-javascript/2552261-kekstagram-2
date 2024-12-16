@@ -52,6 +52,8 @@ const sliderContainer = document.querySelector('.img-upload__effect-level');
 
 const pristine = setupUploadFormValidation(form, textHashtags, textDescription);
 
+const changeEvent = new Event('change');
+
 createSlider(sliderBar, MIN_SLIDER_VALUE, MAX_SLIDER_VALUE, STEP_SLIDER);
 updateValueField(sliderBar, effectLevelValue);
 
@@ -138,7 +140,7 @@ function close() {
   imgUploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onKeydownEsc);
-  form.reset();
+  resetForm();
 }
 
 function setupImageEffect(radioElement, SliderVisibility, filterName) {
@@ -179,4 +181,12 @@ function getFilterValue(filterName) {
     value += 'px';
   }
   return value;
+}
+
+function resetForm() {
+  radioEffectNone.checked = true;
+  radioEffectNone.dispatchEvent(changeEvent);
+  imgUploadPreview.style.transform = 'scale(1)';
+  imgPreview.src = '';
+  form.reset();
 }
