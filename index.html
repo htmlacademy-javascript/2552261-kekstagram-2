@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link href="vendor/nouislider/nouislider.css" rel="stylesheet">
   <title>Кекстаграм</title>
 </head>
 
@@ -31,7 +32,9 @@
     <section class="img-upload">
       <div class="img-upload__wrapper">
         <h2 class="img-upload__title  visually-hidden">Загрузка фотографии</h2>
-        <form class="img-upload__form" id="upload-select-image" autocomplete="off">
+        <form class="img-upload__form" id="upload-select-image"
+              action='https://31.javascript.htmlacademy.pro/kekstagram' method='POST' enctype='multipart/form-data'
+              autocomplete="off">
 
           <!-- Изначальное состояние поля для загрузки изображения -->
           <fieldset class="img-upload__start">
@@ -124,10 +127,7 @@
               <!-- Добавление хэштегов и комментария к изображению -->
               <fieldset class="img-upload__text text">
                 <div class="img-upload__field-wrapper">
-                  <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег" minlength="2"
-                         data-pristine-pattern-message="Введён невалидный хэштег"
-                         data-pristine-minlength-message="Минимальная длинна хэштега 2 символа"
-                         pattern="/^(#([A-Za-zА-яа-я0-9]{1,19})(\s|$)){1,5}$/i">
+                  <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег">
                 </div>
                 <div class="img-upload__field-wrapper">
                   <textarea class="text__description" name="description" placeholder="Ваш комментарий..."
@@ -295,7 +295,7 @@
     <h2 class="data-error__title">Не удалось загрузить данные</h2>
   </section>
 </template>
-
+<script src="vendor/nouislider/nouislider.js"></script>
 <script src="vendor/pristine/pristine.js"></script>
 <script src="./js/main.js" type="module"></script>
 </body>

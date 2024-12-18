@@ -94,7 +94,9 @@ function getPhotoById(id) {
 }
 
 picturesContainer.addEventListener('click', (evt) => {
-  openBigPicture(evt);
+  if(evt.target.classList.contains('picture__img')) {
+    openBigPicture(evt);
+  }
 });
 
 buttonCansel.addEventListener('click', () => {
