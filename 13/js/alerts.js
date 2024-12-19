@@ -51,11 +51,8 @@ function showSuccessAlert() {
   addAlertElement(successUploadContainer, successButton);
 }
 
-function showErrorAlert(cb) {
-  return function () {
-    addAlertElement(errorUploadContainer, errorButton);
-    cb();
-  };
+function showErrorAlert() {
+  addAlertElement(errorUploadContainer, errorButton);
 }
 
 function showDataAlert() {
