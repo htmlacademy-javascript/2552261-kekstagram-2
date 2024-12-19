@@ -26,10 +26,13 @@ form.addEventListener('submit', (evt) => {
   if (isValid) {
     blockSubmitButton();
     sendData(() => {
-      unBlockSubmitButton();
       showSuccessAlert();
+      unBlockSubmitButton();
       closeForm();
-    }, showErrorAlert(unBlockSubmitButton()), new FormData(evt.target));
+    }, () => {
+      showErrorAlert();
+      unBlockSubmitButton();
+    }, new FormData(evt.target));
   }
 });
 
