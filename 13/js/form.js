@@ -99,5 +99,3 @@ function resetForm() {
   imgPreview.src = '';
   form.reset();
 }
-
-

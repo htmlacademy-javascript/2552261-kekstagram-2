@@ -10,4 +10,3 @@ const imgUploadPreview = document.querySelector('.img-upload__preview');
 showData(miniatureCreate);
 setButtonScaleSmaller(imgUploadPreview);
 setButtonScaleBigger(imgUploadPreview);
-

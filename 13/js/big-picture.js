@@ -106,4 +106,3 @@ function getCommentsShown() {
 function getPhotoById(data, id) {
   return data.find((photo) => photo.id === Number(id));
 }
-

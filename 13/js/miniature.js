@@ -16,5 +16,3 @@ function miniatureCreate(photos) {
 }
 
 export {miniatureCreate};
-
-
