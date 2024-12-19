@@ -31,10 +31,12 @@ function onBigPictureEscKeyDown(evt) {
 }
 
 function onButtonLoadClick() {
-  const photoId = document.querySelector('.big-picture img').dataset.photoId;
-  const currentPhoto = getPhotoById(photoId);
-  addComments(currentPhoto, COMMENTS_AMOUNT + shownCommentsCounter);
-  getCommentsShown();
+  getData().then((photos) => {
+    const photoId = document.querySelector('.big-picture img').dataset.photoId;
+    const currentPhoto = getPhotoById(photos, photoId);
+    addComments(currentPhoto, COMMENTS_AMOUNT + shownCommentsCounter);
+    getCommentsShown();
+  });
 }
 
 function createBigPicture(evt) {

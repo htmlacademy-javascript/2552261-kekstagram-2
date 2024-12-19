@@ -49,7 +49,8 @@ function applyEffectLevel(image, effectName) {
 }
 
 function updateSliderOptions(effectName) {
-  const {filter, ...sliderParameters} = effects[effectName];
+  const sliderParameters = {...effects[effectName]};
+  delete sliderParameters['filter'];
   switch (effectName) {
     case 'marvin': {
       updateSlider(sliderBar, ...Object.values(sliderParameters));
