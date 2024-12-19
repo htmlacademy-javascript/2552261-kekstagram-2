@@ -36,6 +36,12 @@ form.addEventListener('submit', (evt) => {
   }
 });
 
+form.addEventListener('input', (event) => {
+  if (pristine.validate(event.target)) {
+    pristine.reset();
+  }
+});
+
 textHashtags.addEventListener('keydown', (evt) => {
   if (isEscKeyDown(evt)) {
     evt.stopPropagation();

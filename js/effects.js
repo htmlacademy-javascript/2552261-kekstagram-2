@@ -2,7 +2,7 @@ import {createSlider, resetSlider, updateSlider, onUpdateSlider} from './slider-
 
 const effectLevelValue = document.querySelector('.effect-level__value');
 const imgUploadEffects = document.querySelector('.img-upload__effects');
-const imgUploadPreview = document.querySelector('.img-upload__preview');
+const imgUploadPreview = document.querySelector('.img-upload__preview img');
 const sliderBar = document.querySelector('.effect-level__slider');
 const sliderContainer = document.querySelector('.img-upload__effect-level');
 

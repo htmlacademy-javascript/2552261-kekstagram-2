@@ -1,7 +1,7 @@
 import {convertPercentageToNumber} from './util.js';
 
 const STEP_CHANGING_SCALE = 25;
-const MIN_SCALE_VALUE = 0;
+const MIN_SCALE_VALUE = 25;
 const MAX_SCALE_VALUE = 100;
 const HUNDREDTH = 100;
 
