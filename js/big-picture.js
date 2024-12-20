@@ -1,6 +1,6 @@
-import {photos} from './miniatureCreate.js';
 import {isEscKeyDown} from './util.js';
 import {addHidden, removeHidden} from './util.js';
+import {getData} from './api.js';
 
 const COMMENTS_AMOUNT = 5;
 
@@ -12,6 +12,16 @@ const buttonCansel = document.querySelector('.big-picture__cancel');
 const buttonLoad = document.querySelector('.social__comments-loader');
 let shownCommentsCounter = 0;
 
+picturesContainer.addEventListener('click', (evt) => {
+  if (evt.target.classList.contains('picture__img')) {
+    openBigPicture(evt);
+  }
+});
+
+buttonCansel.addEventListener('click', () => {
+  closeBigPicture();
+});
+
 function onBigPictureEscKeyDown(evt) {
   if (isEscKeyDown(evt)) {
     addHidden(bigPicture);
@@ -21,31 +31,37 @@ function onBigPictureEscKeyDown(evt) {
 }
 
 function onButtonLoadClick() {
-  const photoId = document.querySelector('.big-picture img').dataset.photoId;
-  const currentPhoto = getPhotoById(photoId);
-  addComments(currentPhoto, COMMENTS_AMOUNT + shownCommentsCounter);
-  getCommentsShown();
+  getData().then((photos) => {
+    const photoId = document.querySelector('.big-picture img').dataset.photoId;
+    const currentPhoto = getPhotoById(photos, photoId);
+    addComments(currentPhoto, COMMENTS_AMOUNT + shownCommentsCounter);
+    getCommentsShown();
+  });
 }
 
-function createBigPictureData(evt) {
-  const miniature = evt.target.closest('.picture');
-  if (miniature.classList.contains('picture')) {
-    const photoId = miniature.querySelector('.picture__img').dataset.photoId;
-    const currentPhoto = getPhotoById(photoId);
-    bigPicture.querySelector('.big-picture__img').querySelector('img').src =
-      currentPhoto.url;
-    bigPicture.querySelector('.big-picture__img').querySelector('img').dataset.photoId = currentPhoto.id;
-    bigPicture.querySelector('.likes-count').textContent =
-      currentPhoto.likes;
-    bigPicture.querySelector('.social__comment-total-count').textContent =
-      currentPhoto.comments.length.toString();
+function createBigPicture(evt) {
+  getData().then((photos) => {
+    const photoId = evt.target.dataset.photoId;
+    const currentPhoto = getPhotoById(photos, photoId);
+    updateBigPicture(currentPhoto);
     addComments(currentPhoto, COMMENTS_AMOUNT);
     getCommentsShown();
-  }
+  });
+}
+
+function updateBigPicture(currentPhoto) {
+  bigPicture.querySelector('.big-picture__img').querySelector('img').src =
+    currentPhoto.url;
+  bigPicture.querySelector('.big-picture__img').querySelector('img').dataset.photoId =
+    currentPhoto.id;
+  bigPicture.querySelector('.likes-count').textContent =
+    currentPhoto.likes;
+  bigPicture.querySelector('.social__comment-total-count').textContent =
+    currentPhoto.comments.length.toString();
 }
 
 function openBigPicture(evt) {
-  createBigPictureData(evt);
+  createBigPicture(evt);
   removeHidden(bigPicture);
   buttonLoad.addEventListener('click', onButtonLoadClick);
   document.addEventListener('keydown', onBigPictureEscKeyDown);
@@ -89,17 +105,6 @@ function getCommentsShown() {
     shownCommentsCounter.toString();
 }
 
-function getPhotoById(id) {
-  return photos.find((photo) => photo.id === Number(id));
+function getPhotoById(data, id) {
+  return data.find((photo) => photo.id === Number(id));
 }
-
-picturesContainer.addEventListener('click', (evt) => {
-  if(evt.target.classList.contains('picture__img')) {
-    openBigPicture(evt);
-  }
-});
-
-buttonCansel.addEventListener('click', () => {
-  closeBigPicture();
-});
-
