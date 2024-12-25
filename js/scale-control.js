@@ -9,11 +9,8 @@ const buttonScaleSmaller = document.querySelector('.scale__control--smaller');
 const buttonScaleBigger = document.querySelector('.scale__control--bigger');
 const scaleControl = document.querySelector('.scale__control--value');
 
-function setButtonScaleSmaller(image) {
+function setButtonsScale(image) {
   buttonScaleSmaller.addEventListener('click', () => onButtonScaleClick('-', image));
-}
-
-function setButtonScaleBigger(image) {
   buttonScaleBigger.addEventListener('click', () => onButtonScaleClick('+', image));
 }
 
@@ -39,5 +36,5 @@ function changeImageScale(value, image) {
   scaleControl.value = `${value}%`;
 }
 
-export {setButtonScaleSmaller, setButtonScaleBigger};
+export {setButtonsScale};
 

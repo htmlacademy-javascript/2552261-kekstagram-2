@@ -1,34 +1,44 @@
-import {showData, showSortedDiscussedData, showTenRandomPhotos} from './api.js';
-import {miniatureCreate} from './miniature.js';
-import {debounce} from './util.js';
+import {comparedDiscussedFilter, getRandomElements} from './util.js';
 
 const filters = document.querySelector('.img-filters');
 const defaultButton = filters.querySelector('#filter-default');
 const randomButton = filters.querySelector('#filter-random');
 const discussedButton = filters.querySelector('#filter-discussed');
-const debouncedShowFilteredPhotos = debounce(showFilteredPhotos);
 
-defaultButton.addEventListener('click', () => {
-  debouncedShowFilteredPhotos(showData);
-  changeActiveButton(defaultButton);
-});
+function setDefaultButton(showPhotos, photos) {
+  defaultButton.addEventListener('click', () => {
+    showPhotos(photos);
+    changeActiveButton(defaultButton);
+  });
+}
 
-randomButton.addEventListener('click', () => {
-  debouncedShowFilteredPhotos(showTenRandomPhotos);
-  changeActiveButton(randomButton);
-});
+function setRandomButton(showPhotos, photos) {
+  randomButton.addEventListener('click', () => {
+    showPhotos(getTenRandomPhotos(photos));
+    changeActiveButton(randomButton);
+  });
+}
 
-discussedButton.addEventListener('click', () => {
-  debouncedShowFilteredPhotos(showSortedDiscussedData);
-  changeActiveButton(discussedButton);
-});
+function setDiscussedButton(showPhotos, photos) {
+  discussedButton.addEventListener('click', () => {
+    showPhotos(sortedPhotoDiscussed(photos));
+    changeActiveButton(discussedButton);
+  });
+}
+
+function sortedPhotoDiscussed(photos) {
+  const copyPhotos = photos.slice();
+  return copyPhotos.sort(comparedDiscussedFilter);
+}
+
+function getTenRandomPhotos(photos) {
+  return getRandomElements(photos);
+}
 
 function changeActiveButton(buttonFilter) {
   document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
   buttonFilter.classList.add('img-filters__button--active');
 }
 
-function showFilteredPhotos(callback) {
-  callback(miniatureCreate);
-}
+export {setDefaultButton, setRandomButton, setDiscussedButton};
 

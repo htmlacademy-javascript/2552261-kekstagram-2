@@ -1,6 +1,5 @@
-import {isEscKeyDown} from './util.js';
-import {addHidden, removeHidden} from './util.js';
-import {getData} from './api.js';
+import {addHidden, isEscKeyDown, removeHidden} from './util.js';
+import {photos} from './main.js';
 
 const COMMENTS_AMOUNT = 5;
 
@@ -31,22 +30,18 @@ function onBigPictureEscKeyDown(evt) {
 }
 
 function onButtonLoadClick() {
-  getData().then((photos) => {
-    const photoId = document.querySelector('.big-picture img').dataset.photoId;
-    const currentPhoto = getPhotoById(photos, photoId);
-    addComments(currentPhoto, COMMENTS_AMOUNT + shownCommentsCounter);
-    getCommentsShown();
-  });
+  const photoId = document.querySelector('.big-picture img').dataset.photoId;
+  const currentPhoto = getPhotoById(photoId);
+  addComments(currentPhoto, COMMENTS_AMOUNT + shownCommentsCounter);
+  getCommentsShown();
 }
 
 function createBigPicture(evt) {
-  getData().then((photos) => {
-    const photoId = evt.target.dataset.photoId;
-    const currentPhoto = getPhotoById(photos, photoId);
-    updateBigPicture(currentPhoto);
-    addComments(currentPhoto, COMMENTS_AMOUNT);
-    getCommentsShown();
-  });
+  const photoId = evt.target.dataset.photoId;
+  const currentPhoto = getPhotoById(photoId);
+  updateBigPicture(currentPhoto);
+  addComments(currentPhoto, COMMENTS_AMOUNT);
+  getCommentsShown();
 }
 
 function updateBigPicture(currentPhoto) {
@@ -105,6 +100,6 @@ function getCommentsShown() {
     shownCommentsCounter.toString();
 }
 
-function getPhotoById(data, id) {
-  return data.find((photo) => photo.id === Number(id));
+function getPhotoById(id) {
+  return photos.find((photo) => photo.id === Number(id));
 }

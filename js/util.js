@@ -1,4 +1,4 @@
-const PHOTOAS_RANDOM_COUNT = 10;
+const PHOTOS_RANDOM_COUNT = 10;
 
 function getRandomInteger(a, b) {
   const lower = Math.ceil(Math.min(a, b));
@@ -21,8 +21,7 @@ function removeHidden(block) {
 }
 
 function convertPercentageToNumber(percentageString) {
-  const number = parseInt(percentageString.replace('%', ''), 10);
-  return number;
+  return parseInt(percentageString.replace('%', ''), 10);
 }
 
 function comparedDiscussedFilter(a, b) {
@@ -32,10 +31,10 @@ function comparedDiscussedFilter(a, b) {
 function getRandomElements(array) {
   const set = new Set();
   let count;
-  if (array.length < PHOTOAS_RANDOM_COUNT) {
+  if (array.length < PHOTOS_RANDOM_COUNT) {
     count = array.length;
   } else {
-    count = PHOTOAS_RANDOM_COUNT;
+    count = PHOTOS_RANDOM_COUNT;
   }
   while (set.size !== count) {
     set.add(getRandomArrayElement(array));

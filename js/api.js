@@ -1,48 +1,34 @@
 import {showDataAlert} from './alerts.js';
-import {comparedDiscussedFilter, getRandomElements} from './util.js';
 
-function getData() {
-  return fetch('https://31.javascript.htmlacademy.pro/kekstagram/data')
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('Неуспешный ответ от сервера');
-      }
-    })
-    .catch(() => {
-      showDataAlert();
-    });
-}
-
-function sendData(onSuccess, onFail, body) {
-  fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
-    method: 'POST',
-    body: body
-  }).then((response) => {
-    if (response.ok) {
-      onSuccess();
-    } else {
-      throw new Error('Неуспешный ответ от сервера');
+async function getData() {
+  let response;
+  try {
+    response = await fetch('https://31.javascript.htmlacademy.pro/kekstagram/data');
+    if (!response.ok) {
+      throw new Error(`${response.status} — ${response.statusText}`);
     }
-  }).catch(() => onFail());
+  } catch (error) {
+    showDataAlert();
+  }
+  return await response.json();
 }
 
-function showData(onSuccess) {
-  getData().then((data) => {
-    onSuccess(data);
-  });
+async function sendData(onSuccess, onFail, body) {
+  let response;
+  try {
+    response = await fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
+      method: 'POST',
+      body: body
+    });
+    if (response.ok) {
+      await onSuccess();
+    } else {
+      throw new Error(`${response.status} — ${response.statusText}`);
+    }
+  } catch (error) {
+    onFail();
+  }
 }
 
-function showSortedDiscussedData(onSuccess) {
-  getData().then((data) => data.sort(comparedDiscussedFilter)).then((sortedData) => {
-    onSuccess(sortedData);
-  });
-}
-
-function showTenRandomPhotos(onSuccess) {
-  getData().then((data) => getRandomElements(data)).then((randomPhotos) => onSuccess(randomPhotos));
-}
-
-export {getData, sendData, showData, showSortedDiscussedData, showTenRandomPhotos};
+export {getData, sendData};
 

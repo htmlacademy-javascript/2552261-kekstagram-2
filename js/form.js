@@ -20,19 +20,12 @@ const pristine = setupUploadFormValidation(form, textHashtags, textDescription);
 
 const changeEvent = new Event('change', {bubbles: true, cancelable: false});
 
-form.addEventListener('submit', (evt) => {
+form.addEventListener('submit', async (evt) => {
   const isValid = pristine.validate();
   evt.preventDefault();
   if (isValid) {
     blockSubmitButton();
-    sendData(() => {
-      showSuccessAlert();
-      unBlockSubmitButton();
-      closeForm();
-    }, () => {
-      showErrorAlert();
-      unBlockSubmitButton();
-    }, new FormData(evt.target));
+    await sendData(onSuccess, onFail, new FormData(evt.target));
   }
 });
 
@@ -107,4 +100,15 @@ function resetForm() {
   imgUploadPreview.style.transform = 'scale(1)';
   imgPreview.src = '';
   form.reset();
+}
+
+function onSuccess() {
+  showSuccessAlert();
+  unBlockSubmitButton();
+  closeForm();
+}
+
+function onFail() {
+  showErrorAlert();
+  unBlockSubmitButton();
 }
