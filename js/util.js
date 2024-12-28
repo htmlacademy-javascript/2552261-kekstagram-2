@@ -1,5 +1,3 @@
-const PHOTOS_RANDOM_COUNT = 10;
-
 function getRandomInteger(a, b) {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -28,18 +26,18 @@ function comparedDiscussedFilter(a, b) {
   return b.comments.length - a.comments.length;
 }
 
-function getRandomElements(array) {
+function getRandomElements(array, amountElements) {
   const set = new Set();
   let count;
-  if (array.length < PHOTOS_RANDOM_COUNT) {
+  if (array.length < amountElements) {
     count = array.length;
   } else {
-    count = PHOTOS_RANDOM_COUNT;
+    count = amountElements;
   }
   while (set.size !== count) {
     set.add(getRandomArrayElement(array));
   }
-  return set;
+  return Array.from(set);
 }
 
 function debounce(callback, timeoutDelay = 500) {

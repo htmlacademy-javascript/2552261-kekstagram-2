@@ -1,5 +1,6 @@
 import {comparedDiscussedFilter, getRandomElements} from './util.js';
 
+const PHOTOS_RANDOM_COUNT = 10;
 const filters = document.querySelector('.img-filters');
 const defaultButton = filters.querySelector('#filter-default');
 const randomButton = filters.querySelector('#filter-random');
@@ -32,7 +33,7 @@ function sortedPhotoDiscussed(photos) {
 }
 
 function getTenRandomPhotos(photos) {
-  return getRandomElements(photos);
+  return getRandomElements(photos, PHOTOS_RANDOM_COUNT);
 }
 
 function changeActiveButton(buttonFilter) {

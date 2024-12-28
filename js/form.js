@@ -97,7 +97,7 @@ function closeForm() {
 
 function resetForm() {
   radioEffectNone.dispatchEvent(changeEvent);
-  imgUploadPreview.style.transform = 'scale(1)';
+  imgPreview.style.transform = 'scale(1)';
   imgPreview.src = '';
   form.reset();
 }

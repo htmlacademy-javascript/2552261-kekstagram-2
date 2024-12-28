@@ -4,13 +4,14 @@ async function getData() {
   let response;
   try {
     response = await fetch('https://31.javascript.htmlacademy.pro/kekstagram/data');
-    if (!response.ok) {
+    if (response.ok) {
+      return await response.json();
+    } else {
       throw new Error(`${response.status} — ${response.statusText}`);
     }
   } catch (error) {
     showDataAlert();
   }
-  return await response.json();
 }
 
 async function sendData(onSuccess, onFail, body) {
