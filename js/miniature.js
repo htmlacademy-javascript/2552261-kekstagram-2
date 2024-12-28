@@ -1,5 +1,5 @@
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const pictures = document.querySelector('.pictures');
+const picturesContainer = document.querySelector('.pictures');
 const documentFragment = document.createDocumentFragment();
 
 function miniatureCreate(photos) {
@@ -12,7 +12,7 @@ function miniatureCreate(photos) {
     picture.querySelector('.picture__comments').textContent = photo.comments.length;
     documentFragment.appendChild(picture);
   });
-  pictures.appendChild(documentFragment);
+  picturesContainer.appendChild(documentFragment);
 }
 
 export {miniatureCreate};

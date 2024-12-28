@@ -1,37 +1,35 @@
 import {showDataAlert} from './alerts.js';
 
-function getData() {
-  return fetch('https://31.javascript.htmlacademy.pro/kekstagram/data')
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('Неуспешный ответ от сервера');
-      }
-    })
-    .catch(() => {
-      showDataAlert();
-    });
-}
-
-function sendData(onSuccess, onFail, body) {
-  fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
-    method: 'POST',
-    body: body
-  }).then((response) => {
+async function getData() {
+  let response;
+  try {
+    response = await fetch('https://31.javascript.htmlacademy.pro/kekstagram/data');
     if (response.ok) {
-      onSuccess();
+      return await response.json();
     } else {
-      throw new Error('Неуспешный ответ от сервера');
+      throw new Error(`${response.status} — ${response.statusText}`);
     }
-  }).catch(() => onFail());
+  } catch (error) {
+    showDataAlert();
+  }
 }
 
-function showData(onSuccess) {
-  getData().then((data) => {
-    onSuccess(data);
-  });
+async function sendData(onSuccess, onFail, body) {
+  let response;
+  try {
+    response = await fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
+      method: 'POST',
+      body: body
+    });
+    if (response.ok) {
+      await onSuccess();
+    } else {
+      throw new Error(`${response.status} — ${response.statusText}`);
+    }
+  } catch (error) {
+    onFail();
+  }
 }
 
-export {getData, sendData, showData};
+export {getData, sendData};
 
