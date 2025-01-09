@@ -20,12 +20,12 @@ const pristine = setupUploadFormValidation(form, textHashtags, textDescription);
 
 const changeEvent = new Event('change', {bubbles: true, cancelable: false});
 
-form.addEventListener('submit', async (evt) => {
+form.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
   evt.preventDefault();
   if (isValid) {
     blockSubmitButton();
-    await sendData(onSuccess, onFail, new FormData(evt.target));
+    sendData(onSuccess, onFail, new FormData(evt.target));
   }
 });
 
@@ -76,15 +76,14 @@ function onKeydownEsc(evt) {
 function changePreviewImage(uploadFile) {
   const file = uploadFile.files[0];
   if (file) {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const result = event.target.result;
-      imgPreview.src = result.toString();
-      for (const effect of effectsPreview) {
-        effect.style.backgroundImage = `url(${result})`;
-      }
+    const blobUrl = URL.createObjectURL(file);
+    imgPreview.src = blobUrl;
+    for (const effect of effectsPreview) {
+      effect.style.backgroundImage = `url(${blobUrl})`;
+    }
+    imgPreview.onload = () => {
+      URL.revokeObjectURL(blobUrl);
     };
-    reader.readAsDataURL(file);
   }
 }
 

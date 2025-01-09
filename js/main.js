@@ -1,7 +1,6 @@
 import './big-picture.js';
 import './form.js';
 import './effects.js';
-import './filters.js';
 import {getData} from './api.js';
 import {miniatureCreate} from './miniature.js';
 import {setButtonsScale} from './scale-control.js';
@@ -11,19 +10,23 @@ import {setDefaultButton, setDiscussedButton, setRandomButton} from './filters.j
 const imgUploadPreview = document.querySelector('.img-upload__preview img');
 const filters = document.querySelector('.img-filters');
 const debouncedShowFilteredPhotos = debounce(showFilteredPhotos);
-const photos = await getData();
 
-showPhotos();
+getData(showPhotos);
 setButtonsScale(imgUploadPreview);
-setDefaultButton(debouncedShowFilteredPhotos, photos);
-setRandomButton(debouncedShowFilteredPhotos, photos);
-setDiscussedButton(debouncedShowFilteredPhotos, photos);
 
-function showPhotos() {
-  miniatureCreate(photos);
-  if (photos.length > 0) {
+
+function showPhotos(photos) {
+  if (photos !== undefined && photos.length > 0) {
+    miniatureCreate(photos);
     filters.classList.remove('img-filters--inactive');
+    filt(photos);
   }
+}
+
+function filt(photos) {
+  setDefaultButton(debouncedShowFilteredPhotos, photos);
+  setRandomButton(debouncedShowFilteredPhotos, photos);
+  setDiscussedButton(debouncedShowFilteredPhotos, photos);
 }
 
 function showFilteredPhotos(filteredPhotos) {
@@ -39,4 +42,3 @@ function removeAllPictures() {
   }
 }
 
-export {photos};

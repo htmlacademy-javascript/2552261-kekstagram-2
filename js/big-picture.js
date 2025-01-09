@@ -1,21 +1,14 @@
 import {addHidden, isEscKeyDown, removeHidden} from './util.js';
-import {photos} from './main.js';
 
 const COMMENTS_AMOUNT = 5;
 
-const picturesContainer = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
 const commentTemplate = document.querySelector('#comment').content
   .querySelector('.social__comment');
 const buttonCansel = document.querySelector('.big-picture__cancel');
 const buttonLoad = document.querySelector('.social__comments-loader');
+const socialCaption = document.querySelector('.social__caption');
 let shownCommentsCounter = 0;
-
-picturesContainer.addEventListener('click', (evt) => {
-  if (evt.target.classList.contains('picture__img')) {
-    openBigPicture(evt);
-  }
-});
 
 buttonCansel.addEventListener('click', () => {
   closeBigPicture();
@@ -30,17 +23,14 @@ function onBigPictureEscKeyDown(evt) {
 }
 
 function onButtonLoadClick() {
-  const photoId = document.querySelector('.big-picture img').dataset.photoId;
-  const currentPhoto = getPhotoById(photoId);
+  const currentPhoto = buttonLoad.photo;
   addComments(currentPhoto, COMMENTS_AMOUNT + shownCommentsCounter);
   getCommentsShown();
 }
 
-function createBigPicture(evt) {
-  const photoId = evt.target.dataset.photoId;
-  const currentPhoto = getPhotoById(photoId);
-  updateBigPicture(currentPhoto);
-  addComments(currentPhoto, COMMENTS_AMOUNT);
+function createBigPicture(photo) {
+  updateBigPicture(photo);
+  addComments(photo, COMMENTS_AMOUNT);
   getCommentsShown();
 }
 
@@ -55,9 +45,11 @@ function updateBigPicture(currentPhoto) {
     currentPhoto.comments.length.toString();
 }
 
-function openBigPicture(evt) {
-  createBigPicture(evt);
+function openBigPicture(photo) {
+  createBigPicture(photo);
+  buttonLoad.photo = photo;
   removeHidden(bigPicture);
+  socialCaption.textContent = photo.description;
   buttonLoad.addEventListener('click', onButtonLoadClick);
   document.addEventListener('keydown', onBigPictureEscKeyDown);
   document.body.classList.add('modal-open');
@@ -100,6 +92,4 @@ function getCommentsShown() {
     shownCommentsCounter.toString();
 }
 
-function getPhotoById(id) {
-  return photos.find((photo) => photo.id === Number(id));
-}
+export {openBigPicture, closeBigPicture};

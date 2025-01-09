@@ -1,34 +1,31 @@
 import {showDataAlert} from './alerts.js';
 
-async function getData() {
-  let response;
-  try {
-    response = await fetch('https://31.javascript.htmlacademy.pro/kekstagram/data');
-    if (response.ok) {
-      return await response.json();
-    } else {
-      throw new Error(`${response.status} — ${response.statusText}`);
-    }
-  } catch (error) {
-    showDataAlert();
-  }
-}
+const getData = (onSuccess) => {
+  fetch('https://32.javascript.htmlacademy.pro/kekstagram/data')
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error(`${response.status} — ${response.statusText}`);
+      }
+    })
+    .then((posts) => {
+      onSuccess(posts);
+    }).catch(() => showDataAlert());
+};
 
-async function sendData(onSuccess, onFail, body) {
-  let response;
-  try {
-    response = await fetch('https://31.javascript.htmlacademy.pro/kekstagram', {
-      method: 'POST',
-      body: body
-    });
+function sendData(onSuccess, onFail, body) {
+  fetch('https://32.javascript.htmlacademy.pro/kekstagram/', {
+    method: 'POST',
+    body: body
+  }).then((response) => {
     if (response.ok) {
-      await onSuccess();
+      return response.json();
     } else {
       throw new Error(`${response.status} — ${response.statusText}`);
     }
-  } catch (error) {
-    onFail();
-  }
+  }).then(() => onSuccess())
+    .catch(() => onFail());
 }
 
 export {getData, sendData};
