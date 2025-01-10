@@ -1,30 +1,23 @@
-import {comparedDiscussedFilter, getRandomElements} from './util.js';
+import {comparedDiscussedFilter, debounce, getRandomElements} from './util.js';
+import {miniatureCreate} from './miniature.js';
 
 const PHOTOS_RANDOM_COUNT = 10;
-const filters = document.querySelector('.img-filters');
+
+const filters = document.querySelector('.img-filters__form');
 const defaultButton = filters.querySelector('#filter-default');
 const randomButton = filters.querySelector('#filter-random');
 const discussedButton = filters.querySelector('#filter-discussed');
+const debouncedShowFilteredPhotos = debounce(showFilteredPhotos);
 
-function setDefaultButton(showPhotos, photos) {
-  defaultButton.addEventListener('click', () => {
-    showPhotos(photos);
-    changeActiveButton(defaultButton);
+function setFilters(photos) {
+  filters.addEventListener('click', (evt) => {
+    onFilterButtonClick(evt, photos);
   });
 }
 
-function setRandomButton(showPhotos, photos) {
-  randomButton.addEventListener('click', () => {
-    showPhotos(getTenRandomPhotos(photos));
-    changeActiveButton(randomButton);
-  });
-}
-
-function setDiscussedButton(showPhotos, photos) {
-  discussedButton.addEventListener('click', () => {
-    showPhotos(sortedPhotoDiscussed(photos));
-    changeActiveButton(discussedButton);
-  });
+function setButton(button, photos) {
+  debouncedShowFilteredPhotos(photos);
+  changeActiveButton(button);
 }
 
 function sortedPhotoDiscussed(photos) {
@@ -41,5 +34,30 @@ function changeActiveButton(buttonFilter) {
   buttonFilter.classList.add('img-filters__button--active');
 }
 
-export {setDefaultButton, setRandomButton, setDiscussedButton};
+function showFilteredPhotos(filteredPhotos) {
+  removeAllPictures();
+  miniatureCreate(filteredPhotos);
+}
 
+function removeAllPictures() {
+  const pictures = document.querySelectorAll('.picture');
+  if (pictures.length !== 0) {
+    pictures.forEach((picture) =>
+      picture.remove());
+  }
+}
+
+function onFilterButtonClick(evt, photos) {
+  switch (evt.target.id) {
+    case 'filter-random':
+      setButton(randomButton, getTenRandomPhotos(photos));
+      break;
+    case 'filter-discussed':
+      setButton(discussedButton, sortedPhotoDiscussed(photos));
+      break;
+    default:
+      setButton(defaultButton, photos);
+  }
+}
+
+export {setFilters};

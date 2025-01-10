@@ -1,4 +1,4 @@
-import {openBigPicture} from "./big-picture.js";
+import {openBigPicture} from './big-picture.js';
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const picturesContainer = document.querySelector('.pictures');

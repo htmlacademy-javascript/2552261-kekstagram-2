@@ -1,7 +1,7 @@
 import {isEscKeyDown} from './util.js';
 import {setupUploadFormValidation} from './validation.js';
 import {sendData} from './api.js';
-import {showSuccessAlert, showErrorAlert} from './alerts.js';
+import {showErrorAlert, showSuccessAlert} from './alerts.js';
 
 const form = document.querySelector('.img-upload__form');
 const submitButton = form.querySelector('.img-upload__submit');
