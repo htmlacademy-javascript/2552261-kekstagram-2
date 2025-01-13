@@ -1,22 +1,14 @@
-import {isEscKeyDown} from './util.js';
-import {addHidden, removeHidden} from './util.js';
-import {getData} from './api.js';
+import {addHidden, isEscKeyDown, removeHidden} from './util.js';
 
 const COMMENTS_AMOUNT = 5;
 
-const picturesContainer = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
 const commentTemplate = document.querySelector('#comment').content
   .querySelector('.social__comment');
 const buttonCansel = document.querySelector('.big-picture__cancel');
 const buttonLoad = document.querySelector('.social__comments-loader');
+const socialCaption = document.querySelector('.social__caption');
 let shownCommentsCounter = 0;
-
-picturesContainer.addEventListener('click', (evt) => {
-  if (evt.target.classList.contains('picture__img')) {
-    openBigPicture(evt);
-  }
-});
 
 buttonCansel.addEventListener('click', () => {
   closeBigPicture();
@@ -31,22 +23,15 @@ function onBigPictureEscKeyDown(evt) {
 }
 
 function onButtonLoadClick() {
-  getData().then((photos) => {
-    const photoId = document.querySelector('.big-picture img').dataset.photoId;
-    const currentPhoto = getPhotoById(photos, photoId);
-    addComments(currentPhoto, COMMENTS_AMOUNT + shownCommentsCounter);
-    getCommentsShown();
-  });
+  const currentPhoto = buttonLoad.photo;
+  addComments(currentPhoto, COMMENTS_AMOUNT + shownCommentsCounter);
+  getCommentsShown();
 }
 
-function createBigPicture(evt) {
-  getData().then((photos) => {
-    const photoId = evt.target.dataset.photoId;
-    const currentPhoto = getPhotoById(photos, photoId);
-    updateBigPicture(currentPhoto);
-    addComments(currentPhoto, COMMENTS_AMOUNT);
-    getCommentsShown();
-  });
+function createBigPicture(photo) {
+  updateBigPicture(photo);
+  addComments(photo, COMMENTS_AMOUNT);
+  getCommentsShown();
 }
 
 function updateBigPicture(currentPhoto) {
@@ -60,9 +45,11 @@ function updateBigPicture(currentPhoto) {
     currentPhoto.comments.length.toString();
 }
 
-function openBigPicture(evt) {
-  createBigPicture(evt);
+function openBigPicture(photo) {
+  createBigPicture(photo);
+  buttonLoad.photo = photo;
   removeHidden(bigPicture);
+  socialCaption.textContent = photo.description;
   buttonLoad.addEventListener('click', onButtonLoadClick);
   document.addEventListener('keydown', onBigPictureEscKeyDown);
   document.body.classList.add('modal-open');
@@ -105,6 +92,4 @@ function getCommentsShown() {
     shownCommentsCounter.toString();
 }
 
-function getPhotoById(data, id) {
-  return data.find((photo) => photo.id === Number(id));
-}
+export {openBigPicture, closeBigPicture};

@@ -19,10 +19,45 @@ function removeHidden(block) {
 }
 
 function convertPercentageToNumber(percentageString) {
-  const number = parseInt(percentageString.replace('%', ''), 10);
-  return number;
+  return parseInt(percentageString.replace('%', ''), 10);
+}
+
+function comparedDiscussedFilter(a, b) {
+  return b.comments.length - a.comments.length;
+}
+
+function getRandomElements(array, amountElements) {
+  const set = new Set();
+  let count;
+  if (array.length < amountElements) {
+    count = array.length;
+  } else {
+    count = amountElements;
+  }
+  while (set.size !== count) {
+    set.add(getRandomArrayElement(array));
+  }
+  return Array.from(set);
+}
+
+function debounce(callback, timeoutDelay = 500) {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
 }
 
 const isEscKeyDown = (evt) => evt.key === 'Escape';
 
-export {getRandomInteger, getRandomArrayElement, isEscKeyDown, addHidden, removeHidden, convertPercentageToNumber};
+export {
+  getRandomInteger,
+  getRandomArrayElement,
+  isEscKeyDown,
+  addHidden,
+  removeHidden,
+  convertPercentageToNumber,
+  comparedDiscussedFilter,
+  getRandomElements,
+  debounce
+};

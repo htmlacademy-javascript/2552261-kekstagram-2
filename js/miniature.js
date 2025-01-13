@@ -1,5 +1,7 @@
+import {openBigPicture} from './big-picture.js';
+
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const pictures = document.querySelector('.pictures');
+const picturesContainer = document.querySelector('.pictures');
 const documentFragment = document.createDocumentFragment();
 
 function miniatureCreate(photos) {
@@ -10,9 +12,12 @@ function miniatureCreate(photos) {
     picture.querySelector('.picture__img').dataset.photoId = photo.id;
     picture.querySelector('.picture__likes').textContent = photo.likes;
     picture.querySelector('.picture__comments').textContent = photo.comments.length;
+    picture.addEventListener('click', () => {
+      openBigPicture(photo);
+    });
     documentFragment.appendChild(picture);
   });
-  pictures.appendChild(documentFragment);
+  picturesContainer.appendChild(documentFragment);
 }
 
 export {miniatureCreate};

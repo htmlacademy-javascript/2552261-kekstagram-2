@@ -1,7 +1,7 @@
 import {isEscKeyDown} from './util.js';
 import {setupUploadFormValidation} from './validation.js';
 import {sendData} from './api.js';
-import {showSuccessAlert, showErrorAlert} from './alerts.js';
+import {showErrorAlert, showSuccessAlert} from './alerts.js';
 
 const form = document.querySelector('.img-upload__form');
 const submitButton = form.querySelector('.img-upload__submit');
@@ -25,14 +25,13 @@ form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   if (isValid) {
     blockSubmitButton();
-    sendData(() => {
-      showSuccessAlert();
-      unBlockSubmitButton();
-      closeForm();
-    }, () => {
-      showErrorAlert();
-      unBlockSubmitButton();
-    }, new FormData(evt.target));
+    sendData(onSuccess, onFail, new FormData(evt.target));
+  }
+});
+
+form.addEventListener('input', (event) => {
+  if (pristine.validate(event.target)) {
+    pristine.reset();
   }
 });
 
@@ -77,15 +76,14 @@ function onKeydownEsc(evt) {
 function changePreviewImage(uploadFile) {
   const file = uploadFile.files[0];
   if (file) {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const result = event.target.result;
-      imgPreview.src = result.toString();
-      for (const effect of effectsPreview) {
-        effect.style.backgroundImage = `url(${result})`;
-      }
+    const blobUrl = URL.createObjectURL(file);
+    imgPreview.src = blobUrl;
+    for (const effect of effectsPreview) {
+      effect.style.backgroundImage = `url(${blobUrl})`;
+    }
+    imgPreview.onload = () => {
+      URL.revokeObjectURL(blobUrl);
     };
-    reader.readAsDataURL(file);
   }
 }
 
@@ -98,7 +96,18 @@ function closeForm() {
 
 function resetForm() {
   radioEffectNone.dispatchEvent(changeEvent);
-  imgUploadPreview.style.transform = 'scale(1)';
+  imgPreview.style.transform = 'scale(1)';
   imgPreview.src = '';
   form.reset();
+}
+
+function onSuccess() {
+  showSuccessAlert();
+  unBlockSubmitButton();
+  closeForm();
+}
+
+function onFail() {
+  showErrorAlert();
+  unBlockSubmitButton();
 }

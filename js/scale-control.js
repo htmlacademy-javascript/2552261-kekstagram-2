@@ -1,7 +1,7 @@
 import {convertPercentageToNumber} from './util.js';
 
 const STEP_CHANGING_SCALE = 25;
-const MIN_SCALE_VALUE = 0;
+const MIN_SCALE_VALUE = 25;
 const MAX_SCALE_VALUE = 100;
 const HUNDREDTH = 100;
 
@@ -9,11 +9,8 @@ const buttonScaleSmaller = document.querySelector('.scale__control--smaller');
 const buttonScaleBigger = document.querySelector('.scale__control--bigger');
 const scaleControl = document.querySelector('.scale__control--value');
 
-function setButtonScaleSmaller(image) {
+function setButtonsScale(image) {
   buttonScaleSmaller.addEventListener('click', () => onButtonScaleClick('-', image));
-}
-
-function setButtonScaleBigger(image) {
   buttonScaleBigger.addEventListener('click', () => onButtonScaleClick('+', image));
 }
 
@@ -39,5 +36,5 @@ function changeImageScale(value, image) {
   scaleControl.value = `${value}%`;
 }
 
-export {setButtonScaleSmaller, setButtonScaleBigger};
+export {setButtonsScale};
 

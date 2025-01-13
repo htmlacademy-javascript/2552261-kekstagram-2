@@ -23,7 +23,7 @@ function setupUploadFormValidation(form, textHashtags, textDescription) {
       if (value.trim() === '') {
         return true;
       }
-      const pattern = /^(#([A-Za-zА-яа-я0-9]{1,19})(\s|$)){1,5}$/i;
+      const pattern = /^(#([A-Za-zА-яа-я0-9]{1,19})(\s+|$)){1,5}$/i;
       return pattern.test(value);
     },
     'Введён невалидный хэштег', 1, true
