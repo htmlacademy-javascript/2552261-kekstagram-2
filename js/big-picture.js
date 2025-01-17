@@ -14,27 +14,21 @@ buttonCansel.addEventListener('click', () => {
   closeBigPicture();
 });
 
-function onBigPictureEscKeyDown(evt) {
+const onBigPictureEscKeyDown = (evt) => {
   if (isEscKeyDown(evt)) {
     addHidden(bigPicture);
     evt.preventDefault();
     closeBigPicture();
   }
-}
+};
 
-function onButtonLoadClick() {
+const onButtonLoadClick = () => {
   const currentPhoto = buttonLoad.photo;
   addComments(currentPhoto, COMMENTS_AMOUNT + shownCommentsCounter);
   getCommentsShown();
-}
+};
 
-function createBigPicture(photo) {
-  updateBigPicture(photo);
-  addComments(photo, COMMENTS_AMOUNT);
-  getCommentsShown();
-}
-
-function updateBigPicture(currentPhoto) {
+const updateBigPicture = (currentPhoto) => {
   bigPicture.querySelector('.big-picture__img').querySelector('img').src =
     currentPhoto.url;
   bigPicture.querySelector('.big-picture__img').querySelector('img').dataset.photoId =
@@ -43,9 +37,15 @@ function updateBigPicture(currentPhoto) {
     currentPhoto.likes;
   bigPicture.querySelector('.social__comment-total-count').textContent =
     currentPhoto.comments.length.toString();
-}
+};
 
-function openBigPicture(photo) {
+const createBigPicture = (photo) => {
+  updateBigPicture(photo);
+  addComments(photo, COMMENTS_AMOUNT);
+  getCommentsShown();
+};
+
+const openBigPicture = (photo) => {
   createBigPicture(photo);
   buttonLoad.photo = photo;
   removeHidden(bigPicture);
@@ -53,17 +53,21 @@ function openBigPicture(photo) {
   buttonLoad.addEventListener('click', onButtonLoadClick);
   document.addEventListener('keydown', onBigPictureEscKeyDown);
   document.body.classList.add('modal-open');
-}
+};
 
-function closeBigPicture() {
+const closeBigPicture = () => {
   addHidden(bigPicture);
   removeHidden(document.querySelector('.comments-loader'));
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onBigPictureEscKeyDown);
   buttonLoad.removeEventListener('click', onButtonLoadClick);
-}
+};
 
-function addComments(photo, amount) {
+const clearComments = () => {
+  bigPicture.querySelector('.social__comments').innerHTML = '';
+};
+
+const addComments = (photo, amount) => {
   const commentsList = photo.comments.slice();
   const documentFragment = document.createDocumentFragment();
   for (let i = 0; i < Math.min(amount, commentsList.length); i++) {
@@ -81,15 +85,11 @@ function addComments(photo, amount) {
     addHidden(document.querySelector('.comments-loader'));
     shownCommentsCounter = commentsList.length;
   }
-}
+};
 
-function clearComments() {
-  bigPicture.querySelector('.social__comments').innerHTML = '';
-}
-
-function getCommentsShown() {
+const getCommentsShown = () => {
   bigPicture.querySelector('.social__comment-shown-count').textContent =
     shownCommentsCounter.toString();
-}
+};
 
 export {openBigPicture, closeBigPicture};

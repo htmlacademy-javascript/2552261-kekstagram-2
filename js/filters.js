@@ -7,47 +7,40 @@ const filters = document.querySelector('.img-filters__form');
 const defaultButton = filters.querySelector('#filter-default');
 const randomButton = filters.querySelector('#filter-random');
 const discussedButton = filters.querySelector('#filter-discussed');
-const debouncedShowFilteredPhotos = debounce(showFilteredPhotos);
 
-function setFilters(photos) {
-  filters.addEventListener('click', (evt) => {
-    onFilterButtonClick(evt, photos);
-  });
-}
-
-function setButton(button, photos) {
-  debouncedShowFilteredPhotos(photos);
-  changeActiveButton(button);
-}
-
-function sortedPhotoDiscussed(photos) {
-  const copyPhotos = photos.slice();
-  return copyPhotos.sort(comparedDiscussedFilter);
-}
-
-function getTenRandomPhotos(photos) {
-  return getRandomElements(photos, PHOTOS_RANDOM_COUNT);
-}
-
-function changeActiveButton(buttonFilter) {
-  document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
-  buttonFilter.classList.add('img-filters__button--active');
-}
-
-function showFilteredPhotos(filteredPhotos) {
-  removeAllPictures();
-  miniatureCreate(filteredPhotos);
-}
-
-function removeAllPictures() {
+const removeAllPictures = () => {
   const pictures = document.querySelectorAll('.picture');
   if (pictures.length !== 0) {
     pictures.forEach((picture) =>
       picture.remove());
   }
-}
+};
 
-function onFilterButtonClick(evt, photos) {
+const showFilteredPhotos = (filteredPhotos) => {
+  removeAllPictures();
+  miniatureCreate(filteredPhotos);
+};
+
+const debouncedShowFilteredPhotos = debounce(showFilteredPhotos);
+
+const changeActiveButton = (buttonFilter) => {
+  document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
+  buttonFilter.classList.add('img-filters__button--active');
+};
+
+const setButton = (button, photos) => {
+  debouncedShowFilteredPhotos(photos);
+  changeActiveButton(button);
+};
+
+const sortedPhotoDiscussed = (photos) => {
+  const copyPhotos = photos.slice();
+  return copyPhotos.sort(comparedDiscussedFilter);
+};
+
+const getTenRandomPhotos = (photos) => getRandomElements(photos, PHOTOS_RANDOM_COUNT);
+
+const onFilterButtonClick = (evt, photos) => {
   switch (evt.target.id) {
     case 'filter-random':
       setButton(randomButton, getTenRandomPhotos(photos));
@@ -58,6 +51,12 @@ function onFilterButtonClick(evt, photos) {
     default:
       setButton(defaultButton, photos);
   }
-}
+};
+
+const setFilters = (photos) => {
+  filters.addEventListener('click', (evt) => {
+    onFilterButtonClick(evt, photos);
+  });
+};
 
 export {setFilters};

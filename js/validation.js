@@ -2,13 +2,15 @@ const MAX_COMMENT_LENGTH = 140;
 const MAX_AMOUNT_HASHTAGS = 5;
 const MIN_HASHTAG_LENGTH = 2;
 
-function setupUploadFormValidation(form, textHashtags, textDescription) {
+const setupUploadFormValidation = (form, textHashtags, textDescription) => {
   const pristine = new Pristine(form, {
     classTo: 'img-upload__field-wrapper',
     errorTextParent: 'img-upload__field-wrapper',
     errorClass: '--error',
     errorTextClass: 'img-upload__field-wrapper'
   });
+
+  const transformHashtags = (value) => value.split(/\s/).map((hashtag) => hashtag.toLowerCase()).filter(Boolean);
 
   pristine.addValidator(
     textHashtags, (value) => {
@@ -52,10 +54,6 @@ function setupUploadFormValidation(form, textHashtags, textDescription) {
   pristine.addValidator(textDescription, (value) => value.length < MAX_COMMENT_LENGTH
     , `Достигнуто максимальное количество символов (${MAX_COMMENT_LENGTH})`);
   return pristine;
-}
-
-function transformHashtags(value) {
-  return value.split(/\s/).map((hashtag) => hashtag.toLowerCase()).filter(Boolean);
-}
+};
 
 export {setupUploadFormValidation};

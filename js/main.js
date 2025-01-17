@@ -8,15 +8,13 @@ import {setButtonsScale} from './scale-control.js';
 const imgUploadPreview = document.querySelector('.img-upload__preview img');
 const filters = document.querySelector('.img-filters');
 
-getData(showPhotos);
-setButtonsScale(imgUploadPreview);
-
-function showPhotos(photos) {
+const showPhotos = (photos) => {
   if (photos !== undefined && photos.length > 0) {
     miniatureCreate(photos);
     filters.classList.remove('img-filters--inactive');
     setFilters(photos);
   }
-}
+};
 
-
+getData(showPhotos);
+setButtonsScale(imgUploadPreview);

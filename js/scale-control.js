@@ -9,12 +9,12 @@ const buttonScaleSmaller = document.querySelector('.scale__control--smaller');
 const buttonScaleBigger = document.querySelector('.scale__control--bigger');
 const scaleControl = document.querySelector('.scale__control--value');
 
-function setButtonsScale(image) {
-  buttonScaleSmaller.addEventListener('click', () => onButtonScaleClick('-', image));
-  buttonScaleBigger.addEventListener('click', () => onButtonScaleClick('+', image));
-}
+const changeImageScale = (value, image) => {
+  image.style.transform = `scale(${value / HUNDREDTH})`;
+  scaleControl.value = `${value}%`;
+};
 
-function onButtonScaleClick(arithmeticOperand, image) {
+const onButtonScaleClick = (arithmeticOperand, image) => {
   let value = convertPercentageToNumber(scaleControl.value);
   switch (arithmeticOperand) {
     case '+':
@@ -29,12 +29,12 @@ function onButtonScaleClick(arithmeticOperand, image) {
         changeImageScale(value, image);
       }
   }
-}
+};
 
-function changeImageScale(value, image) {
-  image.style.transform = `scale(${value / HUNDREDTH})`;
-  scaleControl.value = `${value}%`;
-}
+const setButtonsScale = (image) => {
+  buttonScaleSmaller.addEventListener('click', () => onButtonScaleClick('-', image));
+  buttonScaleBigger.addEventListener('click', () => onButtonScaleClick('+', image));
+};
 
 export {setButtonsScale};
 

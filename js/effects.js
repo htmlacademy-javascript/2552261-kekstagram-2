@@ -27,28 +27,7 @@ onUpdateSlider(sliderBar, () => {
 
 sliderContainer.style.visibility = 'hidden';
 
-imgUploadEffects.addEventListener('change', (evt) => {
-  if (evt.target.value === 'none') {
-    sliderContainer.style.visibility = 'hidden';
-  } else {
-    sliderContainer.style.visibility = 'visible';
-  }
-  resetSlider(sliderBar);
-  applyEffectLevel(imgUploadPreview, evt.target.value);
-});
-
-function applyEffectLevel(image, effectName) {
-  updateSliderOptions(effectName);
-  if (effectName === 'none') {
-    image.style.filter = effects[effectName].filter;
-  } else {
-    onUpdateSlider(sliderBar, () => {
-      image.style.filter = `${effects[effectName].filter}(${getFilterValue(effectName)})`;
-    });
-  }
-}
-
-function updateSliderOptions(effectName) {
+const updateSliderOptions = (effectName) => {
   const sliderParameters = {...effects[effectName]};
   delete sliderParameters['filter'];
   switch (effectName) {
@@ -65,9 +44,9 @@ function updateSliderOptions(effectName) {
       updateSlider(sliderBar, ...Object.values(sliderParameters));
     }
   }
-}
+};
 
-function getFilterValue(effectName) {
+const getFilterValue = (effectName) => {
   let value = effectLevelValue.value;
   if (effectName === 'marvin') {
     value += '%';
@@ -75,5 +54,25 @@ function getFilterValue(effectName) {
     value += 'px';
   }
   return value;
-}
+};
 
+const applyEffectLevel = (image, effectName) => {
+  updateSliderOptions(effectName);
+  if (effectName === 'none') {
+    image.style.filter = effects[effectName].filter;
+  } else {
+    onUpdateSlider(sliderBar, () => {
+      image.style.filter = `${effects[effectName].filter}(${getFilterValue(effectName)})`;
+    });
+  }
+};
+
+imgUploadEffects.addEventListener('change', (evt) => {
+  if (evt.target.value === 'none') {
+    sliderContainer.style.visibility = 'hidden';
+  } else {
+    sliderContainer.style.visibility = 'visible';
+  }
+  resetSlider(sliderBar);
+  applyEffectLevel(imgUploadPreview, evt.target.value);
+});
