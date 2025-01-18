@@ -34,12 +34,12 @@ const onKeydownEsc = (evt) => {
   }
 };
 
-const closeForm = () => {
+function closeForm() {
   imgUploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onKeydownEsc);
   resetForm();
-};
+}
 
 const blockSubmitButton = () => {
   submitButton.disabled = true;
