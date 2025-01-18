@@ -20,6 +20,60 @@ const pristine = setupUploadFormValidation(form, textHashtags, textDescription);
 
 const changeEvent = new Event('change', {bubbles: true, cancelable: false});
 
+const resetForm = () => {
+  radioEffectNone.dispatchEvent(changeEvent);
+  imgPreview.style.transform = 'scale(1)';
+  imgPreview.src = '';
+  form.reset();
+};
+
+const onKeydownEsc = (evt) => {
+  if (isEscKeyDown(evt)) {
+    evt.preventDefault();
+    closeForm();
+  }
+};
+
+function closeForm() {
+  imgUploadOverlay.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  document.removeEventListener('keydown', onKeydownEsc);
+  resetForm();
+}
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+};
+
+const unBlockSubmitButton = () => {
+  submitButton.disabled = false;
+};
+
+const changePreviewImage = (uploadFile) => {
+  const file = uploadFile.files[0];
+  if (file) {
+    const blobUrl = URL.createObjectURL(file);
+    imgPreview.src = blobUrl;
+    for (const effect of effectsPreview) {
+      effect.style.backgroundImage = `url(${blobUrl})`;
+    }
+    imgPreview.onload = () => {
+      URL.revokeObjectURL(blobUrl);
+    };
+  }
+};
+
+const onSuccess = () => {
+  showSuccessAlert();
+  unBlockSubmitButton();
+  closeForm();
+};
+
+const onFail = () => {
+  showErrorAlert();
+  unBlockSubmitButton();
+};
+
 form.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
   evt.preventDefault();
@@ -58,56 +112,3 @@ uploadButtonClose.addEventListener('click', () => {
   closeForm();
 });
 
-function blockSubmitButton() {
-  submitButton.disabled = true;
-}
-
-function unBlockSubmitButton() {
-  submitButton.disabled = false;
-}
-
-function onKeydownEsc(evt) {
-  if (isEscKeyDown(evt)) {
-    evt.preventDefault();
-    closeForm();
-  }
-}
-
-function changePreviewImage(uploadFile) {
-  const file = uploadFile.files[0];
-  if (file) {
-    const blobUrl = URL.createObjectURL(file);
-    imgPreview.src = blobUrl;
-    for (const effect of effectsPreview) {
-      effect.style.backgroundImage = `url(${blobUrl})`;
-    }
-    imgPreview.onload = () => {
-      URL.revokeObjectURL(blobUrl);
-    };
-  }
-}
-
-function closeForm() {
-  imgUploadOverlay.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onKeydownEsc);
-  resetForm();
-}
-
-function resetForm() {
-  radioEffectNone.dispatchEvent(changeEvent);
-  imgPreview.style.transform = 'scale(1)';
-  imgPreview.src = '';
-  form.reset();
-}
-
-function onSuccess() {
-  showSuccessAlert();
-  unBlockSubmitButton();
-  closeForm();
-}
-
-function onFail() {
-  showErrorAlert();
-  unBlockSubmitButton();
-}

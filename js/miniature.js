@@ -4,7 +4,7 @@ const pictureTemplate = document.querySelector('#picture').content.querySelector
 const picturesContainer = document.querySelector('.pictures');
 const documentFragment = document.createDocumentFragment();
 
-function miniatureCreate(photos) {
+const miniatureCreate = (photos) => {
   photos.forEach((photo) => {
     const picture = pictureTemplate.cloneNode(true);
     picture.querySelector('.picture__img').src = photo.url;
@@ -18,6 +18,6 @@ function miniatureCreate(photos) {
     documentFragment.appendChild(picture);
   });
   picturesContainer.appendChild(documentFragment);
-}
+};
 
 export {miniatureCreate};

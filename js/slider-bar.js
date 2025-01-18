@@ -1,6 +1,6 @@
-function createSlider(slider, start, min, max, step) {
+function createSlider(slider, startPoint, min, max, step) {
   noUiSlider.create(slider, {
-    start: [start],
+    start: startPoint,
     range: {
       'min': min,
       'max': max
@@ -22,12 +22,12 @@ function onUpdateSlider(slider, handler) {
 }
 
 function resetSlider(slider) {
-  slider.noUiSlider.set([slider.noUiSlider.options.range.max]);
+  slider.noUiSlider.set(slider.noUiSlider.options.range.max);
 }
 
-function updateSlider(slider, start, min, max, step) {
+function updateSlider(slider, startPoint, min, max, step) {
   slider.noUiSlider.updateOptions({
-    start: [start],
+    start: startPoint,
     connect: true,
     range: {
       'min': min,

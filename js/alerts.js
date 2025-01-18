@@ -5,6 +5,38 @@ const errorUploadContainer = document.querySelector('#error').content.querySelec
 const dataAlertContainer = document.querySelector('#data-error').content.querySelector('.data-error').cloneNode(true);
 const successButton = successUploadContainer.querySelector('.success__button');
 const errorButton = errorUploadContainer.querySelector('.error__button');
+const imgUpload = document.querySelector('.img-upload__input');
+
+const onKeyDownEsc = (evt, container) => {
+  if (isEscKeyDown(evt)) {
+    evt.stopPropagation();
+    container.remove();
+  }
+};
+
+const onClick = (evt, container, evtClass) => {
+  if (evt.target.classList.contains(evtClass)) {
+    container.remove();
+  }
+};
+
+const addAlertElement = (element, elementButton) => {
+  document.body.appendChild(element);
+  elementButton.focus();
+};
+
+const showSuccessAlert = () => {
+  addAlertElement(successUploadContainer, successButton);
+};
+
+const showErrorAlert = () => {
+  addAlertElement(errorUploadContainer, errorButton);
+};
+
+const showDataAlert = () => {
+  document.body.appendChild(dataAlertContainer);
+  setTimeout(() => dataAlertContainer.remove(), 5000);
+};
 
 successUploadContainer.addEventListener('keydown', (evt) =>
   onKeyDownEsc(evt, successUploadContainer));
@@ -20,49 +52,24 @@ successButton.addEventListener('blur', () => {
   successButton.focus();
 });
 
-errorUploadContainer.addEventListener('keydown', (evt) =>
-  onKeyDownEsc(evt, errorUploadContainer));
+errorUploadContainer.addEventListener('keydown', (evt) => {
+  onKeyDownEsc(evt, errorUploadContainer);
+  imgUpload.focus();
+});
 
-errorUploadContainer.addEventListener('click', (evt) =>
-  onClick(evt, errorUploadContainer, 'error'));
+
+errorUploadContainer.addEventListener('click', (evt) => {
+  onClick(evt, errorUploadContainer, 'error');
+  imgUpload.focus();
+});
 
 errorButton.addEventListener('click', () => {
+  imgUpload.focus();
   errorUploadContainer.remove();
 });
 
 errorButton.addEventListener('blur', () => {
   errorButton.focus();
 });
-
-function onKeyDownEsc(evt, container) {
-  if (isEscKeyDown(evt)) {
-    evt.stopPropagation();
-    container.remove();
-  }
-}
-
-function onClick(evt, container, evtClass) {
-  if (evt.target.classList.contains(evtClass)) {
-    container.remove();
-  }
-}
-
-function showSuccessAlert() {
-  addAlertElement(successUploadContainer, successButton);
-}
-
-function showErrorAlert() {
-  addAlertElement(errorUploadContainer, errorButton);
-}
-
-function showDataAlert() {
-  document.body.appendChild(dataAlertContainer);
-  setTimeout(() => dataAlertContainer.remove(), 5000);
-}
-
-function addAlertElement(element, elementButton) {
-  document.body.appendChild(element);
-  elementButton.focus();
-}
 
 export {showSuccessAlert, showErrorAlert, showDataAlert};
